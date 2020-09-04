@@ -24,6 +24,7 @@
     "parcel-bundler": "^1.12.4",
     "postcss-modules": "^2.0.0",
     "react-hot-loader": "^4.12.21",
+    "regenerator-runtime": "^0.13.7",
     "sass": "^1.26.8",
     "tslint": "^6.1.2",
     "tslint-react": "^5.0.0",
@@ -31,6 +32,7 @@
   },
   "dependencies": {
     "@mdi/font": "^5.3.45",
+    "axios": "^0.20.0",
     "history": "^5.0.0",
     "qs": "^6.9.4",
     "react": "^16.13.1",

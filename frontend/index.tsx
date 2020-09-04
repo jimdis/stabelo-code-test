@@ -1,3 +1,4 @@
+import "regenerator-runtime/runtime";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { BrowserRouter, Redirect, Route } from "react-router-dom";
@@ -9,15 +10,15 @@ import Implementation from "./application/pages/implementation/ImplementationPag
 import "./index.scss";
 
 ReactDOM.render(
-    <BrowserRouter>
-        <>
-            <Header />
-            <main>
-                <Route exact={true} path="/" render={() => <Redirect to="/about" />} />
-                <Route path="/about" component={About} />
-                <Route path="/implementation" component={Implementation} />
-            </main>
-        </>
-    </BrowserRouter>,
-    document.getElementById("app"),
+  <BrowserRouter>
+    <>
+      <Header />
+      <main>
+        <Route exact={true} path="/" render={() => <Redirect to="/about" />} />
+        <Route path="/about" component={About} />
+        <Route path="/implementation" component={Implementation} />
+      </main>
+    </>
+  </BrowserRouter>,
+  document.getElementById("app")
 );
