@@ -16,7 +16,7 @@ router.get("/sample", (context) => {
 
 //TODO: Replace with models etc
 let elevators: { number: number; floor: number }[] = [];
-for (let i = 1; i <= 20; i++) {
+for (let i = 1; i <= 5; i++) {
   elevators.push({
     number: i,
     floor: Math.floor(Math.random() * 20) + 1,
