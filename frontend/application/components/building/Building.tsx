@@ -1,5 +1,6 @@
 import * as React from "react";
 import { getBuilding, TBuilding } from "../../api/api";
+import Floor from "./Floor";
 
 const Building = () => {
   const [loading, setLoading] = React.useState(false);
@@ -24,9 +25,19 @@ const Building = () => {
       {error && <p>{error}</p>}
       {building && (
         <div>
-          <p>
-            Floors: <strong>{building.floors}</strong>
-          </p>
+          <p>Floors:</p>
+          <ul>
+            {Array.from(Array(building.floors), (_, i) => (
+              <li key={i + 1}>
+                <Floor
+                  number={i + 1}
+                  onButtonClick={() =>
+                    console.log(`Called elevator to floor ${i + 1}`)
+                  }
+                />
+              </li>
+            ))}
+          </ul>
           <p>Elevators:</p>
           <ul>
             {building.elevators.map((elevator) => (
