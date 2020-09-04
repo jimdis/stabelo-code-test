@@ -30,7 +30,7 @@ const Building = () => {
           <p>Elevators:</p>
           <ul>
             {building.elevators.map((elevator) => (
-              <li>
+              <li key={elevator.number}>
                 <div>
                   Number: <strong>{elevator.number}</strong>
                   <br />
