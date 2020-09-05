@@ -1,14 +1,19 @@
 import * as React from "react";
+import * as css from "./Floor.module.scss";
 
 type Props = {
   number: number;
+  active: boolean;
   onButtonClick: () => void;
 };
-const Floor = ({ number, onButtonClick }: Props) => {
+const Floor = ({ number, active, onButtonClick }: Props) => {
   return (
-    <div>
-      <p>Floor {number}</p>
-      <button onClick={onButtonClick}>Call elevator</button>
+    <div className={css.floor}>
+      <div className={css.buttonArea}>
+        <button className={active ? css.active : ""} onClick={onButtonClick}>
+          {number}
+        </button>
+      </div>
     </div>
   );
 };
