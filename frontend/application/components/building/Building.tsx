@@ -23,24 +23,49 @@ const Building = () => {
     loadBuilding();
   }, []);
 
+  const handleButtonClick = (floorNumber: number) => {
+    //TODO: Call API
+    console.log(`Called elevator to floor ${floorNumber}`);
+    setWaitingFloors([...waitingFloors, floorNumber]);
+    setTimeout(() => {
+      const elevatorNumber = 1;
+      if (building) {
+        const newBuilding = {
+          ...building,
+          elevators: building.elevators.map((elevator) => {
+            if (elevator.number === elevatorNumber) {
+              return {
+                number: elevatorNumber,
+                floor: floorNumber,
+              };
+            } else {
+              return elevator;
+            }
+          }),
+        };
+        setBuilding(newBuilding);
+        setWaitingFloors(waitingFloors.filter((no) => floorNumber !== no));
+      }
+    }, 2000);
+  };
+
+  const floors = building
+    ? Array.from(Array(building.floors), (_, i) => building.floors - i)
+    : [];
+
   return (
     <div>
       {loading && <p>'Laddar...'</p>}
       {error && <p>{error}</p>}
       {building && (
         <div>
-          {Array.from(Array(building.floors), (_, i) => (
+          {floors.map((floorNumber) => (
             <Floor
-              key={`floor-${i + 1}`}
-              number={i + 1}
-              active={waitingFloors.includes(i + 1)}
-              onButtonClick={() => {
-                console.log(`Called elevator to floor ${i + 1}`);
-                setWaitingFloors((waitingFloors: number[]) => [
-                  ...waitingFloors,
-                  i + 1,
-                ]);
-              }}
+              key={`floor-${floorNumber}`}
+              number={floorNumber}
+              active={waitingFloors.includes(floorNumber)}
+              elevators={building.elevators}
+              onButtonClick={() => handleButtonClick(floorNumber)}
             />
           ))}
           <p>Elevators:</p>
