@@ -23,20 +23,33 @@ const Building = () => {
     loadBuilding();
   }, []);
 
+  //TODO: Major refactor
   const handleButtonClick = (floorNumber: number) => {
+    // ignore click if already waiting for elevator or if elevator already is on floor
+    if (
+      !building ||
+      waitingFloors.includes(floorNumber) ||
+      building.elevators.find((el) => el.floor === floorNumber)
+    ) {
+      return;
+    }
     //TODO: Call API
     console.log(`Called elevator to floor ${floorNumber}`);
+    const elevatorNumberCalled = 1;
+    const initialElevatorFloor = building.elevators.find(
+      (el) => el.number === elevatorNumberCalled
+    )?.floor;
+
     setWaitingFloors([...waitingFloors, floorNumber]);
-    setTimeout(() => {
-      const elevatorNumber = 1;
+    const moveElevator = (newFloor: number) => {
       if (building) {
         const newBuilding = {
           ...building,
           elevators: building.elevators.map((elevator) => {
-            if (elevator.number === elevatorNumber) {
+            if (elevator.number === elevatorNumberCalled) {
               return {
-                number: elevatorNumber,
-                floor: floorNumber,
+                number: elevatorNumberCalled,
+                floor: newFloor,
               };
             } else {
               return elevator;
@@ -44,9 +57,23 @@ const Building = () => {
           }),
         };
         setBuilding(newBuilding);
+      }
+      if (floorNumber !== newFloor) {
+        moveElevatorOneFloor(newFloor);
+      } else {
         setWaitingFloors(waitingFloors.filter((no) => floorNumber !== no));
       }
-    }, 2000);
+    };
+    const moveElevatorOneFloor = (currentFloor: number) => {
+      const nextFloor =
+        currentFloor < floorNumber ? currentFloor + 1 : currentFloor - 1;
+      setTimeout(() => {
+        moveElevator(nextFloor);
+      }, 2000);
+    };
+    if (initialElevatorFloor) {
+      moveElevatorOneFloor(initialElevatorFloor);
+    }
   };
 
   const floors = building
