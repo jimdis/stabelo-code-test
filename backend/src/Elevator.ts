@@ -13,22 +13,11 @@ class Elevator {
     return this._floorQueue;
   }
 
-  public secondsToReachFloor(floorNumber: number) {
-    const indexOfAddedFloor = this.calculateQueueIndex(floorNumber);
-    let previousFloor = this._currentFloor;
-    let totalSeconds = 0;
-    this._floorQueue.forEach((queuedFloor, i) => {
-      if (i <= indexOfAddedFloor) {
-        totalSeconds +=
-          Math.abs(queuedFloor - previousFloor) * this._speedAsSecondsPerFloor;
-        previousFloor = queuedFloor;
-      }
-    });
-    return totalSeconds;
-  }
-
   public callElevator(floorNumber: number) {
-    if (this._floorQueue.includes(floorNumber)) {
+    if (
+      this._floorQueue.includes(floorNumber) ||
+      this._currentFloor === floorNumber
+    ) {
       return;
     }
     console.log(`called elevator ${this.id} to floor ${floorNumber}`);
@@ -38,6 +27,22 @@ class Elevator {
     if (wasIdle) {
       this.moveElevator();
     }
+  }
+
+  public calculateSecondsToReachFloor(floorNumber: number) {
+    const indexOfAddedFloor = this.calculateQueueIndex(floorNumber);
+    const queueToTest = [...this._floorQueue];
+    queueToTest.splice(indexOfAddedFloor, 0, floorNumber);
+    let previousFloor = this._currentFloor;
+    let totalSeconds = 0;
+    queueToTest.forEach((queuedFloor, i) => {
+      if (i <= indexOfAddedFloor) {
+        totalSeconds +=
+          Math.abs(queuedFloor - previousFloor) * this._speedAsSecondsPerFloor;
+        previousFloor = queuedFloor;
+      }
+    });
+    return totalSeconds;
   }
 
   private get isGoingUp() {
