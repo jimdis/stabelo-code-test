@@ -2,6 +2,7 @@ import * as cors from "kcors";
 import * as Koa from "koa";
 import * as bodyparser from "koa-bodyparser";
 import * as Router from "koa-router";
+import Building from "./Building";
 
 const app = new Koa();
 const router = new Router();
@@ -12,27 +13,48 @@ router.get("/sample", (context) => {
   context.response.status = 200;
 });
 
-// Add additional routes for implementation here...
+//TODO: Create building with POST ?
+const buildings: Building[] = [];
+buildings.push(new Building(1, 20, 5));
 
-//TODO: Replace with models etc
-let elevators: { number: number; floor: number }[] = [];
-for (let i = 1; i <= 5; i++) {
-  elevators.push({
-    number: i,
-    floor: Math.floor(Math.random() * 20) + 1,
-  });
-}
-router.get("/building", (context) => {
-  context.response.body = { floors: 20, elevators };
+//TODO: turn into middleware?
+const createResponseBody = (buildingId: number) => {
+  const building = buildings.find((building) => building.id === buildingId);
+  if (building) {
+    const { id, floorCount, elevators } = building;
+    return {
+      id,
+      floorCount,
+      elevators,
+    };
+  }
+};
+
+router.get("/building/:id", (context) => {
+  const id = parseInt(context.params.id);
+  if (isNaN(id)) {
+    return (context.response.status = 400);
+  }
+  const buildingResponse = createResponseBody(id);
+  if (!buildingResponse) {
+    return (context.response.status = 404);
+  }
+  context.response.body = buildingResponse;
   context.response.status = 200;
 });
 
-router.get("/floor/:number", (context) => {
-  const floorNumber = context.params.number;
-  const elevator = elevators[Math.floor(Math.random() * elevators.length)];
-  const secondsPerFloor = 2;
-  const eta = Math.abs(floorNumber - elevator.floor) * secondsPerFloor;
-  context.response.body = { elevator, eta };
+router.get("/building/:id/floors/:number", (context) => {
+  const id = parseInt(context.params.id);
+  const floorNumber = parseInt(context.params.number);
+  if (isNaN(id) || isNaN(floorNumber)) {
+    return (context.response.status = 400);
+  }
+  const building = buildings.find((building) => building.id === id);
+  if (!building) {
+    return (context.response.status = 404);
+  }
+  building.callElevator(floorNumber);
+  context.response.body = createResponseBody(id);
   context.response.status = 200;
 });
 
