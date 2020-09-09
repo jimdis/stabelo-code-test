@@ -30,12 +30,8 @@ class Building {
     let fastestTime = 1e9;
     let fastestElevatorIndex = 0;
     this._elevators.forEach((elevator, i) => {
-      console.log("checking elevator", elevator.id);
       const totalTime = elevator.calculateSecondsToReachFloor(floorNumber);
-      console.log("totalTime", totalTime);
-      console.log("fastestTime", fastestTime);
       if (totalTime < fastestTime) {
-        console.log("totalTime is fastest!");
         fastestTime = totalTime;
         fastestElevatorIndex = i;
       }
