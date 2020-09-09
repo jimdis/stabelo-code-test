@@ -37,18 +37,6 @@ const Building = () => {
           queuedElevator={floor.queuedElevator}
         />
       ))}
-      <p>Elevators:</p>
-      <ul>
-        {building.elevators.map((elevator) => (
-          <li key={elevator.id}>
-            <div>
-              Id: <strong>{elevator.id}</strong>
-              <br />
-              Floor: <strong>{elevator.floor}</strong>
-            </div>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 };
