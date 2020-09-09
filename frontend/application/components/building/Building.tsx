@@ -16,20 +16,25 @@ const Building = () => {
     return loading ? <Loader /> : error ? <p>{error}</p> : null;
   }
 
-  const floors = Array.from(
-    Array(building.floorCount),
-    (_, i) => building.floorCount - i
-  );
+  const floors = Array.from(Array(building.floorCount), (_, i) => {
+    const number = building.floorCount - i;
+    const waiting = waitingFloors.includes(number);
+    const queuedElevator = building.elevators.find((el) =>
+      el.queue.includes(number)
+    );
+    return { number, waiting, queuedElevator };
+  });
 
   return (
     <div>
-      {floors.map((floorNumber) => (
+      {floors.map((floor) => (
         <Floor
-          key={`floor-${floorNumber}`}
-          number={floorNumber}
-          active={waitingFloors.includes(floorNumber)}
+          key={`floor-${floor}`}
+          number={floor.number}
+          waiting={floor.waiting}
           elevators={building.elevators}
-          onButtonClick={() => callElevator(floorNumber)}
+          onButtonClick={() => callElevator(floor.number)}
+          queuedElevator={floor.queuedElevator}
         />
       ))}
       <p>Elevators:</p>

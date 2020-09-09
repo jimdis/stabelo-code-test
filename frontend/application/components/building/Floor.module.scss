@@ -35,4 +35,9 @@
     height: 100%;
     padding: 2px 8px;
   }
+  .display {
+    flex-shrink: 0;
+    width: 50px;
+    height: 100%;
+  }
 }
