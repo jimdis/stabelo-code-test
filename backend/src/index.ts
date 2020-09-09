@@ -57,6 +57,7 @@ router.get("/buildings/:id/floors/:number", (context) => {
     return (context.response.status = 404);
   }
   building.callElevator(floorNumber);
+  wsServer.sendMessage("1", createResponseBody(1));
   context.response.body = createResponseBody(id);
   context.response.status = 200;
 });
