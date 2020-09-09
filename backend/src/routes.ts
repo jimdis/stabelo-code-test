@@ -3,6 +3,9 @@ import * as wsServer from "./wsServer";
 import emitter, { ELEVATOR_MOVED } from "./emitter";
 import Building from "./Building";
 
+const FLOOR_COUNT_DEFAULT = 20;
+const ELEVATOR_COUNT_DEFAULT = 5;
+
 const router = new Router();
 
 const buildings: Building[] = [];
@@ -20,12 +23,27 @@ const createResponseBody = (buildingId: string) => {
   }
 };
 
+type TBuildingPost = {
+  floorCount?: number;
+  elevatorCount?: number;
+  name?: string;
+};
 router.post("/buildings", (context) => {
-  const { name } = context.body ?? {};
-  const building = new Building(20, 5, name);
-  buildings.push(building);
-  context.response.body = createResponseBody(building.id);
-  context.response.status = 200;
+  console.log(context.request.body);
+  const {
+    floorCount = FLOOR_COUNT_DEFAULT,
+    elevatorCount = ELEVATOR_COUNT_DEFAULT,
+    name,
+  } = <TBuildingPost | undefined>context.request.body ?? {};
+  try {
+    const building = new Building(floorCount, elevatorCount, name);
+    buildings.push(building);
+    context.response.body = createResponseBody(building.id);
+    context.response.status = 200;
+  } catch (e) {
+    context.response.body = e.message ?? "Något gick fel..";
+    context.response.status = 400;
+  }
 });
 
 router.get("/buildings/:id", (context) => {

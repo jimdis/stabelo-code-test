@@ -3,8 +3,8 @@ import Elevator from "./Elevator";
 
 //Todo: limit min/max floors and elevators
 class Building {
-  private _elevators: Elevator[] = [];
   readonly id: string;
+  private _elevators: Elevator[] = [];
   name: string;
 
   constructor(
@@ -12,6 +12,11 @@ class Building {
     elevatorCount: number,
     name?: string
   ) {
+    if (floorCount < 2 || elevatorCount > 20 || elevatorCount >= floorCount) {
+      throw new Error(
+        "floorCount must be >2 and elevatorCount less than floorCount and less than 20"
+      );
+    }
     this.id = shortid();
     this.name = name ?? `Building-${this.id}`;
     for (let i = 1; i <= elevatorCount; i++) {
