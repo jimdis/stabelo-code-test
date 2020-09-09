@@ -8,8 +8,12 @@ type Props = {
 
 const Display = ({ elevatorId, onFloor }: Props) => (
   <div className={css.display}>
-    <div className={css.row}>E: {elevatorId}</div>
-    <div className={css.row}>F: {onFloor}</div>
+    <div className={css.row}>
+      E: <span className={css.rowText}>{elevatorId}</span>
+    </div>
+    <div className={css.row}>
+      F: <span className={css.rowText}>{onFloor}</span>
+    </div>
   </div>
 );
 

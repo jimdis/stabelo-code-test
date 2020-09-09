@@ -4,10 +4,15 @@
   display: flex;
   flex-direction: column;
   .row {
+    display: flex;
     width: 100%;
     height: 100%;
     color: orange;
     border-bottom: 1px dashed orange;
+    .rowText {
+      flex-grow: 1;
+      text-align: center;
+    }
   }
   .row:last-of-type {
     border-bottom: none;
