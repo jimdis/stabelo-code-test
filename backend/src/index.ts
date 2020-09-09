@@ -2,6 +2,9 @@ import * as cors from "kcors";
 import * as Koa from "koa";
 import * as bodyparser from "koa-bodyparser";
 import * as Router from "koa-router";
+import * as http from "http";
+import * as wsServer from "./wsServer";
+import emitter, { ELEVATOR_MOVED } from "./emitter";
 import Building from "./Building";
 
 const app = new Koa();
@@ -30,7 +33,7 @@ const createResponseBody = (buildingId: number) => {
   }
 };
 
-router.get("/building/:id", (context) => {
+router.get("/buildings/:id", (context) => {
   const id = parseInt(context.params.id);
   if (isNaN(id)) {
     return (context.response.status = 400);
@@ -43,7 +46,7 @@ router.get("/building/:id", (context) => {
   context.response.status = 200;
 });
 
-router.get("/building/:id/floors/:number", (context) => {
+router.get("/buildings/:id/floors/:number", (context) => {
   const id = parseInt(context.params.id);
   const floorNumber = parseInt(context.params.number);
   if (isNaN(id) || isNaN(floorNumber)) {
@@ -67,4 +70,12 @@ app.use(cors());
 
 app.use(router.routes());
 
-app.listen(3000);
+const server = http.createServer(app.callback());
+
+server.listen(3000);
+
+wsServer.createServer(server);
+
+emitter.on(ELEVATOR_MOVED, () => {
+  wsServer.sendMessage("1", createResponseBody(1));
+});

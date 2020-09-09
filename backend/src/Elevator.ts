@@ -1,3 +1,5 @@
+import emitter, { ELEVATOR_MOVED } from "./emitter";
+
 class Elevator {
   private _speedAsSecondsPerFloor = 2;
   private _currentFloor = 1;
@@ -69,6 +71,8 @@ class Elevator {
         this._floorQueue.shift();
       }
       console.log(`elevator ${this.id} in now on floor ${this.currentFloor}`);
+      emitter.emit(ELEVATOR_MOVED);
+
       if (!this.isIdle) {
         this.moveElevator();
       }

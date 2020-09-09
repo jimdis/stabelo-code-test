@@ -18,8 +18,8 @@ const Floor = ({ number, active, elevators, onButtonClick }: Props) => {
         </button>
       </div>
       {elevators.map((elevator) => (
-        <div className={css.elevatorSlot} key={`elevator-${elevator.number}`}>
-          {elevator.floor === number && <Elevator number={elevator.number} />}
+        <div className={css.elevatorSlot} key={`elevator-${elevator.id}`}>
+          {elevator.floor === number && <Elevator number={elevator.id} />}
         </div>
       ))}
     </div>
