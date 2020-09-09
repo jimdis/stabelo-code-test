@@ -19,15 +19,11 @@ const useBuilding = () => {
 
   const updatedBuilding: api.TBuilding | null = lastJsonMessage;
 
-  const createBuilding = async () => {
+  const createBuilding = async (formData: api.TNewBuildingBody) => {
     setLoading(true);
     try {
       //TODO: Add name!
-      const createdBuilding = await api.createBuilding({
-        floorCount: 10,
-        elevatorCount: 5,
-        name: "Nakatomi Plaza",
-      });
+      const createdBuilding = await api.createBuilding(formData);
       setBuilding(createdBuilding);
       setLoading(false);
     } catch (e) {

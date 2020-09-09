@@ -1,7 +1,7 @@
 import * as React from "react";
 import Loader from "../loader/Loader";
 import useBuilding from "./useBuilding";
-import CreateForm from "./CreateForm";
+import NewBuildingForm from "./NewBuildingForm";
 import Floor from "./Floor";
 import * as css from "./Building.module.scss";
 
@@ -21,7 +21,7 @@ const Building = () => {
     ) : error ? (
       <p>{error}</p>
     ) : (
-      <CreateForm onSubmit={createBuilding} />
+      <NewBuildingForm onSubmit={createBuilding} />
     );
   }
 
