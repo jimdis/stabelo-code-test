@@ -1,0 +1,15 @@
+.building {
+  width: 100%;
+  background-color: lightgray;
+  border: 3px outset darkgray;
+  .penthouse {
+    background: linear-gradient(30deg, #b0b0b0, #555);
+    padding: 20px 0;
+    font-size: 2em;
+    color: goldenrod;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    border-bottom: 2px ridge darkgray;
+    margin-bottom: 4px;
+  }
+}

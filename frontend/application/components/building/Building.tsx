@@ -3,6 +3,7 @@ import Loader from "../loader/Loader";
 import useBuilding from "./useBuilding";
 import CreateForm from "./CreateForm";
 import Floor from "./Floor";
+import * as css from "./Building.module.scss";
 
 const Building = () => {
   const {
@@ -34,7 +35,8 @@ const Building = () => {
   });
 
   return (
-    <div>
+    <div className={css.building}>
+      <div className={css.penthouse}>{building.name}</div>
       {floors.map((floor) => (
         <Floor
           key={`floor-${floor.number}`}
