@@ -12,6 +12,7 @@ export type TBuilding = {
   id: string;
   floorCount: number;
   elevators: TElevator[];
+  name: string;
 };
 
 type TNewBuildingBody = {

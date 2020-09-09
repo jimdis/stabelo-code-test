@@ -14,11 +14,12 @@ const buildings: Building[] = [];
 const createResponseBody = (buildingId: string) => {
   const building = buildings.find((building) => building.id === buildingId);
   if (building) {
-    const { id, floorCount, elevators } = building;
+    const { id, floorCount, elevators, name } = building;
     return {
       id,
       floorCount,
       elevators,
+      name,
     };
   }
 };
