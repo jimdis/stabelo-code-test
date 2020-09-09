@@ -14,9 +14,14 @@ export type TBuilding = {
   elevators: TElevator[];
 };
 
-export const createBuilding = async () => {
+type TNewBuildingBody = {
+  floorCount?: number;
+  elevatorCount?: number;
+  name?: string;
+};
+export const createBuilding = async (body?: TNewBuildingBody) => {
   const url = "/buildings";
-  const { data: building } = await api.post<TBuilding>(url);
+  const { data: building } = await api.post<TBuilding>(url, body);
   return building;
 };
 

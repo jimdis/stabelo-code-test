@@ -23,10 +23,17 @@ const useBuilding = () => {
     setLoading(true);
     try {
       //TODO: Add name!
-      const createdBuilding = await api.createBuilding();
+      const createdBuilding = await api.createBuilding({
+        floorCount: 10,
+        elevatorCount: 5,
+        name: "Nakatomi Plaza",
+      });
       setBuilding(createdBuilding);
       setLoading(false);
     } catch (e) {
+      if (e.response) {
+        console.error(e.response);
+      }
       setError("Något gick fel :(");
       setLoading(false);
     }
