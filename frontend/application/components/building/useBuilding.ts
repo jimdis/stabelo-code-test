@@ -1,12 +1,15 @@
 import * as React from "react";
-import useWebSocket, { ReadyState } from "react-use-websocket";
+import useWebSocket from "react-use-websocket";
 import * as api from "../../api/api";
 
 const useBuilding = () => {
   const { lastJsonMessage, readyState } = useWebSocket(api.SOCKET_URL);
   const [building, setBuilding] = React.useState<api.TBuilding>();
+  const [waitingFloors, setWaitingFloors] = React.useState<number[]>([]);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState("");
+
+  const newBuilding: api.TBuilding | null = lastJsonMessage;
 
   React.useEffect(() => {
     const loadBuilding = async () => {
@@ -24,11 +27,15 @@ const useBuilding = () => {
   }, []);
 
   React.useEffect(() => {
-    setBuilding(lastJsonMessage);
-  }, [lastJsonMessage]);
+    if (newBuilding) {
+      setBuilding(newBuilding);
+      setWaitingFloors(newBuilding.elevators.flatMap((el) => el.queue));
+    }
+  }, [newBuilding]);
 
   React.useEffect(() => {
-    console.log(`ReadyState changed to ${readyState}`);
+    //TODO: Revert to fetching building manually if readystate changes to 0 for more than x seconds..
+    console.log(`Websocket ReadyState changed to ${readyState}`);
   }, [readyState]);
 
   const callElevator = (floorNumber: number) => {
@@ -39,11 +46,11 @@ const useBuilding = () => {
     ) {
       return;
     }
-    console.log(`Called elevator to floor ${floorNumber}`);
+    setWaitingFloors([...waitingFloors, floorNumber]);
     api.callElevator(floorNumber);
   };
 
-  return { building, callElevator, loading, error };
+  return { building, waitingFloors, callElevator, loading, error };
 };
 
 export default useBuilding;

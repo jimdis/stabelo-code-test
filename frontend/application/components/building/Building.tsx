@@ -1,20 +1,25 @@
 import * as React from "react";
+import Loader from "../loader/Loader";
 import useBuilding from "./useBuilding";
 import Floor from "./Floor";
 
 const Building = () => {
-  const { building, loading, error, callElevator } = useBuilding();
+  const {
+    building,
+    waitingFloors,
+    loading,
+    error,
+    callElevator,
+  } = useBuilding();
 
   if (!building) {
-    return loading ? <p>'Laddar...'</p> : error ? <p>{error}</p> : null;
+    return loading ? <Loader /> : error ? <p>{error}</p> : null;
   }
 
   const floors = Array.from(
     Array(building.floorCount),
     (_, i) => building.floorCount - i
   );
-
-  const waitingFloors = building.elevators.map((el) => el.floor);
 
   return (
     <div>
