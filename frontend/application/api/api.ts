@@ -9,21 +9,27 @@ const api = axios.create({
 export type TElevator = { id: number; floor: number; queue: number[] };
 
 export type TBuilding = {
-  id: number;
+  id: string;
   floorCount: number;
   elevators: TElevator[];
 };
 
+export const createBuilding = async () => {
+  const url = "/buildings";
+  const { data: building } = await api.post<TBuilding>(url);
+  return building;
+};
+
 //TODO: Dynamic ID
-export const getBuilding = async () => {
-  const url = "/buildings/1";
+export const getBuilding = async (id: string) => {
+  const url = `/buildings/${id}`;
   const { data: building } = await api.get<TBuilding>(url);
   return building;
 };
 
 //TODO: Dynamic ID
-export const callElevator = async (floorNumber: number) => {
-  const url = `/buildings/1/floors/${floorNumber}`;
+export const callElevator = async (buildingId: string, floorNumber: number) => {
+  const url = `/buildings/${buildingId}/floors/${floorNumber}`;
   const { data: building } = await api.get<TBuilding>(url);
   return building;
 };

@@ -5,7 +5,7 @@ class Elevator {
   private _currentFloor = 1;
   private _floorQueue: number[] = [];
 
-  constructor(readonly id: number) {}
+  constructor(readonly id: number, readonly buildingId: string) {}
 
   public get currentFloor() {
     return this._currentFloor;
@@ -25,7 +25,6 @@ class Elevator {
     console.log(`called elevator ${this.id} to floor ${floorNumber}`);
     const wasIdle = this.isIdle;
     this.addFloorToQueue(floorNumber);
-    console.log("queue", this._floorQueue);
     if (wasIdle) {
       this.moveElevator();
     }
@@ -71,7 +70,7 @@ class Elevator {
         this._floorQueue.shift();
       }
       console.log(`elevator ${this.id} in now on floor ${this.currentFloor}`);
-      emitter.emit(ELEVATOR_MOVED);
+      emitter.emit(ELEVATOR_MOVED, this.buildingId);
 
       if (!this.isIdle) {
         this.moveElevator();

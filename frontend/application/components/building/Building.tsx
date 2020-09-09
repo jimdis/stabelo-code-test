@@ -1,6 +1,7 @@
 import * as React from "react";
 import Loader from "../loader/Loader";
 import useBuilding from "./useBuilding";
+import CreateForm from "./CreateForm";
 import Floor from "./Floor";
 
 const Building = () => {
@@ -9,11 +10,18 @@ const Building = () => {
     waitingFloors,
     loading,
     error,
+    createBuilding,
     callElevator,
   } = useBuilding();
 
   if (!building) {
-    return loading ? <Loader /> : error ? <p>{error}</p> : null;
+    return loading ? (
+      <Loader />
+    ) : error ? (
+      <p>{error}</p>
+    ) : (
+      <CreateForm onSubmit={createBuilding} />
+    );
   }
 
   const floors = Array.from(Array(building.floorCount), (_, i) => {
@@ -29,7 +37,7 @@ const Building = () => {
     <div>
       {floors.map((floor) => (
         <Floor
-          key={`floor-${floor}`}
+          key={`floor-${floor.number}`}
           number={floor.number}
           waiting={floor.waiting}
           elevators={building.elevators}

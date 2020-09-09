@@ -16,12 +16,10 @@ router.get("/sample", (context) => {
   context.response.status = 200;
 });
 
-//TODO: Create building with POST ?
 const buildings: Building[] = [];
-buildings.push(new Building(1, 20, 5));
 
 //TODO: turn into middleware?
-const createResponseBody = (buildingId: number) => {
+const createResponseBody = (buildingId: string) => {
   const building = buildings.find((building) => building.id === buildingId);
   if (building) {
     const { id, floorCount, elevators } = building;
@@ -33,9 +31,17 @@ const createResponseBody = (buildingId: number) => {
   }
 };
 
+router.post("/buildings", (context) => {
+  const { name } = context.body ?? {};
+  const building = new Building(20, 5, name);
+  buildings.push(building);
+  context.response.body = createResponseBody(building.id);
+  context.response.status = 200;
+});
+
 router.get("/buildings/:id", (context) => {
-  const id = parseInt(context.params.id);
-  if (isNaN(id)) {
+  const id = context.params.id;
+  if (!id) {
     return (context.response.status = 400);
   }
   const buildingResponse = createResponseBody(id);
@@ -47,9 +53,9 @@ router.get("/buildings/:id", (context) => {
 });
 
 router.get("/buildings/:id/floors/:number", (context) => {
-  const id = parseInt(context.params.id);
+  const id = context.params.id;
   const floorNumber = parseInt(context.params.number);
-  if (isNaN(id) || isNaN(floorNumber)) {
+  if (!id || isNaN(floorNumber)) {
     return (context.response.status = 400);
   }
   const building = buildings.find((building) => building.id === id);
@@ -57,7 +63,7 @@ router.get("/buildings/:id/floors/:number", (context) => {
     return (context.response.status = 404);
   }
   building.callElevator(floorNumber);
-  wsServer.sendMessage("1", createResponseBody(1));
+  wsServer.sendMessage(id, createResponseBody(id));
   context.response.body = createResponseBody(id);
   context.response.status = 200;
 });
@@ -77,6 +83,6 @@ server.listen(3000);
 
 wsServer.createServer(server);
 
-emitter.on(ELEVATOR_MOVED, () => {
-  wsServer.sendMessage("1", createResponseBody(1));
+emitter.on(ELEVATOR_MOVED, (buildingId: string) => {
+  wsServer.sendMessage(buildingId, createResponseBody(buildingId));
 });

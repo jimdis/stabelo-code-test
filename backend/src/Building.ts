@@ -1,16 +1,21 @@
+import * as shortid from "shortid";
 import Elevator from "./Elevator";
 
 //Todo: limit min/max floors and elevators
 class Building {
   private _elevators: Elevator[] = [];
+  readonly id: string;
+  name: string;
 
   constructor(
-    readonly id: number,
     readonly floorCount: number,
-    elevatorCount: number
+    elevatorCount: number,
+    name?: string
   ) {
+    this.id = shortid();
+    this.name = name ?? `Building-${this.id}`;
     for (let i = 1; i <= elevatorCount; i++) {
-      this._elevators.push(new Elevator(i));
+      this._elevators.push(new Elevator(i, this.id));
     }
   }
 
