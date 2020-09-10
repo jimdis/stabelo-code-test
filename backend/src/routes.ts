@@ -80,7 +80,6 @@ router.delete("/buildings/:id", (context) => {
     return (context.response.status = 404);
   }
   buildings.splice(buildingIndex, 1);
-  console.log(buildings);
   context.response.status = 204;
 });
 

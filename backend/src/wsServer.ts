@@ -1,6 +1,7 @@
 import { Server } from "http";
 import * as WebSocket from "ws";
 
+//Stores each socket according to an id
 const sockets: { [id: string]: WebSocket | undefined } = {};
 
 export const createServer = (server: Server) => {
