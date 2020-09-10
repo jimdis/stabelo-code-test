@@ -18,7 +18,7 @@ class Building {
       );
     }
     this.id = shortid();
-    this.name = name ?? `Building-${this.id}`;
+    this.name = name || `Building-${this.id}`;
     for (let i = 1; i <= elevatorCount; i++) {
       this._elevators.push(new Elevator(i, this.id));
     }
