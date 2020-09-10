@@ -1,18 +1,36 @@
 .building {
-  width: 100%;
-  background-color: lightgray;
-  border: 3px outset darkgray;
-  .penthouse {
-    background: linear-gradient(30deg, #b0b0b0, #555);
-    padding: 20px 8px;
-    font-size: 2em;
-    color: goldenrod;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    border-bottom: 2px ridge darkgray;
-    margin-bottom: 4px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  .buildingBody {
+    width: 100%;
+    background-color: lightgray;
+    border: 3px outset darkgray;
+    margin-bottom: 16px;
+    .penthouse {
+      background: linear-gradient(30deg, #b0b0b0, #555);
+      padding: 20px 8px;
+      font-size: 2em;
+      color: goldenrod;
+      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      border-bottom: 2px ridge darkgray;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  .deleteButton {
+    width: 100%;
+    background-color: red;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+  }
+  .deleteButton:hover {
+    background-color: darkred;
   }
 }

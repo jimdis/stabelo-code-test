@@ -26,16 +26,19 @@ export const createBuilding = async (body?: TNewBuildingBody) => {
   return building;
 };
 
-//TODO: Dynamic ID
 export const getBuilding = async (id: string) => {
   const url = `/buildings/${id}`;
   const { data: building } = await api.get<TBuilding>(url);
   return building;
 };
 
-//TODO: Dynamic ID
 export const callElevator = async (buildingId: string, floorNumber: number) => {
   const url = `/buildings/${buildingId}/floors/${floorNumber}`;
   const { data: building } = await api.get<TBuilding>(url);
   return building;
+};
+
+export const deleteBuilding = async (id: string) => {
+  const url = `/buildings/${id}`;
+  await api.delete<TBuilding>(url);
 };

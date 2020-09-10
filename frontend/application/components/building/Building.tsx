@@ -13,6 +13,7 @@ const Building = () => {
     error,
     createBuilding,
     callElevator,
+    deleteBuilding,
   } = useBuilding();
 
   if (!building) {
@@ -36,17 +37,22 @@ const Building = () => {
 
   return (
     <div className={css.building}>
-      <div className={css.penthouse}>{building.name}</div>
-      {floors.map((floor) => (
-        <Floor
-          key={`floor-${floor.number}`}
-          number={floor.number}
-          waiting={floor.waiting}
-          elevators={building.elevators}
-          onButtonClick={() => callElevator(floor.number)}
-          queuedElevator={floor.queuedElevator}
-        />
-      ))}
+      <div className={css.buildingBody}>
+        <div className={css.penthouse}>{building.name}</div>
+        {floors.map((floor) => (
+          <Floor
+            key={`floor-${floor.number}`}
+            number={floor.number}
+            waiting={floor.waiting}
+            elevators={building.elevators}
+            onButtonClick={() => callElevator(floor.number)}
+            queuedElevator={floor.queuedElevator}
+          />
+        ))}
+      </div>
+      <button className={css.deleteButton} onClick={deleteBuilding}>
+        Delete building
+      </button>
     </div>
   );
 };

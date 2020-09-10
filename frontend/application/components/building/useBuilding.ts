@@ -19,22 +19,6 @@ const useBuilding = () => {
 
   const updatedBuilding: api.TBuilding | null = lastJsonMessage;
 
-  const createBuilding = async (formData: api.TNewBuildingBody) => {
-    setLoading(true);
-    try {
-      //TODO: Add name!
-      const createdBuilding = await api.createBuilding(formData);
-      setBuilding(createdBuilding);
-      setLoading(false);
-    } catch (e) {
-      if (e.response) {
-        console.error(e.response);
-      }
-      setError("Något gick fel :(");
-      setLoading(false);
-    }
-  };
-
   //TODO: Add back below to fetch building based on locally stored id
   // React.useEffect(() => {
   //   const loadBuilding = async () => {
@@ -64,6 +48,21 @@ const useBuilding = () => {
     console.log(`Websocket ReadyState changed to ${readyState}`);
   }, [readyState]);
 
+  const createBuilding = async (formData: api.TNewBuildingBody) => {
+    setLoading(true);
+    try {
+      const createdBuilding = await api.createBuilding(formData);
+      setBuilding(createdBuilding);
+      setLoading(false);
+    } catch (e) {
+      if (e.response) {
+        console.error(e.response);
+      }
+      setError("Något gick fel :(");
+      setLoading(false);
+    }
+  };
+
   const callElevator = (floorNumber: number) => {
     // ignore click if already waiting for elevator or if elevator already is on floor
     if (
@@ -76,13 +75,31 @@ const useBuilding = () => {
     api.callElevator(building.id, floorNumber);
   };
 
+  const deleteBuilding = async () => {
+    setLoading(true);
+    try {
+      if (buildingId) {
+        await api.deleteBuilding(buildingId);
+        setBuilding(undefined);
+        setLoading(false);
+      }
+    } catch (e) {
+      if (e.response) {
+        console.error(e.response);
+      }
+      setError("Något gick fel :(");
+      setLoading(false);
+    }
+  };
+
   return {
     building,
     waitingFloors,
-    createBuilding,
-    callElevator,
     loading,
     error,
+    createBuilding,
+    callElevator,
+    deleteBuilding,
   };
 };
 

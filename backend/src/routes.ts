@@ -30,7 +30,6 @@ type TBuildingPost = {
   name?: string;
 };
 router.post("/buildings", (context) => {
-  console.log(context.request.body);
   const {
     floorCount = FLOOR_COUNT_DEFAULT,
     elevatorCount = ELEVATOR_COUNT_DEFAULT,
@@ -49,9 +48,6 @@ router.post("/buildings", (context) => {
 
 router.get("/buildings/:id", (context) => {
   const id = context.params.id;
-  if (!id) {
-    return (context.response.status = 400);
-  }
   const buildingResponse = createResponseBody(id);
   if (!buildingResponse) {
     return (context.response.status = 404);
@@ -63,7 +59,7 @@ router.get("/buildings/:id", (context) => {
 router.get("/buildings/:id/floors/:number", (context) => {
   const id = context.params.id;
   const floorNumber = parseInt(context.params.number);
-  if (!id || isNaN(floorNumber)) {
+  if (isNaN(floorNumber)) {
     return (context.response.status = 400);
   }
   const building = buildings.find((building) => building.id === id);
@@ -74,6 +70,17 @@ router.get("/buildings/:id/floors/:number", (context) => {
   wsServer.sendMessage(id, createResponseBody(id));
   context.response.body = createResponseBody(id);
   context.response.status = 200;
+});
+
+router.delete("/buildings/:id", (context) => {
+  const id = context.params.id;
+  const buildingIndex = buildings.findIndex((building) => building.id === id);
+  if (buildingIndex === -1) {
+    return (context.response.status = 404);
+  }
+  buildings.splice(buildingIndex, 1);
+  console.log(buildings);
+  context.response.status = 204;
 });
 
 emitter.on(ELEVATOR_MOVED, (buildingId: string) => {
