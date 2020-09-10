@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TNewBuildingBody } from "../../api/api";
+import { TNewBuildingBody } from "../../types";
 import * as css from "./NewBuildingForm.module.scss";
 type Props = {
   onSubmit: (body: TNewBuildingBody) => void;

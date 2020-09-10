@@ -1,4 +1,5 @@
 import axios from "axios";
+import { TBuilding, TNewBuildingBody } from "../types";
 const API_URL = "http://localhost:3000";
 export const SOCKET_URL = "ws://localhost:3000";
 
@@ -6,20 +7,6 @@ const api = axios.create({
   baseURL: API_URL,
 });
 
-export type TElevator = { id: number; floor: number; queue: number[] };
-
-export type TBuilding = {
-  id: string;
-  floorCount: number;
-  elevators: TElevator[];
-  name: string;
-};
-
-export type TNewBuildingBody = {
-  floorCount?: number;
-  elevatorCount?: number;
-  name?: string;
-};
 export const createBuilding = async (body?: TNewBuildingBody) => {
   const url = "/buildings";
   const { data: building } = await api.post<TBuilding>(url, body);

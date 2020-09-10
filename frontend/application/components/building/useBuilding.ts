@@ -1,11 +1,12 @@
 import * as React from "react";
 import useWebSocket from "react-use-websocket";
+import { TBuilding, TNewBuildingBody } from "../../types";
 import * as api from "../../api/api";
 
 const STORAGE_KEY = "buildingId";
 
 const useBuilding = () => {
-  const [building, setBuilding] = React.useState<api.TBuilding>();
+  const [building, setBuilding] = React.useState<TBuilding>();
   const buildingId = building?.id;
   const getSocketUrl = React.useCallback(() => {
     return new Promise<string>((resolve) => {
@@ -19,7 +20,7 @@ const useBuilding = () => {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState("");
 
-  const updatedBuilding: api.TBuilding | null = lastJsonMessage;
+  const updatedBuilding: TBuilding | null = lastJsonMessage;
 
   React.useEffect(() => {
     if (buildingId) {
@@ -60,7 +61,7 @@ const useBuilding = () => {
     console.log(`Websocket ReadyState changed to ${readyState}`);
   }, [readyState]);
 
-  const createBuilding = async (formData: api.TNewBuildingBody) => {
+  const createBuilding = async (formData: TNewBuildingBody) => {
     setLoading(true);
     try {
       const createdBuilding = await api.createBuilding(formData);

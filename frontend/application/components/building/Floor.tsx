@@ -1,5 +1,5 @@
 import * as React from "react";
-import { TElevator } from "../../api/api";
+import { TElevator } from "../../types";
 import Elevator from "./Elevator";
 import Display from "./Display";
 import * as css from "./Floor.module.scss";
