@@ -1,6 +1,7 @@
-//borrowed from https://www.w3schools.com/css/tryit.asp?filename=trycss_forms
+//adapted from https://www.w3schools.com/css/tryit.asp?filename=trycss_forms
 .newBuildingForm {
-  border-radius: 5px;
+  border-radius: 8px;
+  border: 1px solid darkgray;
   background-color: #f2f2f2;
   padding: 20px;
   input[type="text"] {
