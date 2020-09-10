@@ -20,11 +20,13 @@ const Floor = ({
 }: Props) => {
   const isButtonDisabled =
     waiting || !!elevators.find((el) => el.floor === number);
+
   const handleClick = () => {
     if (!isButtonDisabled) {
       onButtonClick();
     }
   };
+
   return (
     <div className={css.floor}>
       <div className={css.buttonArea}>

@@ -23,18 +23,12 @@ const useBuilding = () => {
   const updatedBuilding: TBuilding | null = lastJsonMessage;
 
   React.useEffect(() => {
-    if (buildingId) {
-      sessionStorage.setItem(STORAGE_KEY, buildingId);
-    }
-  }, [buildingId]);
-
-  //TODO: Add back below to fetch building based on locally stored id
-  React.useEffect(() => {
     const loadBuilding = async (id: string) => {
       setLoading(true);
       try {
         const currentBuilding = await api.getBuilding(id);
         setBuilding(currentBuilding);
+        setWaitingFloors(currentBuilding.elevators.flatMap((el) => el.queue));
         setLoading(false);
       } catch (e) {
         setBuilding(undefined);
@@ -42,19 +36,23 @@ const useBuilding = () => {
       }
     };
     const storedId = sessionStorage.getItem(STORAGE_KEY);
-    console.log(storedId);
     if (storedId) {
       loadBuilding(storedId);
     }
   }, []);
 
   React.useEffect(() => {
-    console.log("got message!", updatedBuilding);
     if (updatedBuilding) {
       setBuilding(updatedBuilding);
       setWaitingFloors(updatedBuilding.elevators.flatMap((el) => el.queue));
     }
   }, [updatedBuilding]);
+
+  React.useEffect(() => {
+    if (buildingId) {
+      sessionStorage.setItem(STORAGE_KEY, buildingId);
+    }
+  }, [buildingId]);
 
   React.useEffect(() => {
     //TODO: Revert to fetching building manually if readystate changes to 0 for more than x seconds.. Or try reconnecting..

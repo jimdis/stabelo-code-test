@@ -1,9 +1,6 @@
 import * as React from "react";
 import { TNewBuildingBody } from "../../types";
 import * as css from "./NewBuildingForm.module.scss";
-type Props = {
-  onSubmit: (body: TNewBuildingBody) => void;
-};
 
 const MIN_FLOOR_COUNT = 2;
 const MAX_FLOOR_COUNT = 200;
@@ -11,6 +8,10 @@ const MIN_ELEVATOR_COUNT = 1;
 const MAX_ELEVATOR_COUNT = 20;
 const DEFAULT_FLOOR_COUNT = 20;
 const DEFAULT_ELEVATOR_COUNT = 5;
+
+type Props = {
+  onSubmit: (body: TNewBuildingBody) => void;
+};
 
 const NewBuildingForm = ({ onSubmit }: Props) => {
   const [name, setName] = React.useState("Nakatomi Plaza");
