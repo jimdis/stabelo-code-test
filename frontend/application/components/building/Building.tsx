@@ -17,13 +17,7 @@ const Building = () => {
   } = useBuilding();
 
   if (!building) {
-    return loading ? (
-      <Loader />
-    ) : error ? (
-      <p>{error}</p>
-    ) : (
-      <NewBuildingForm onSubmit={createBuilding} />
-    );
+    return loading ? <Loader /> : <NewBuildingForm onSubmit={createBuilding} />;
   }
 
   const floors = Array.from(Array(building.floorCount), (_, i) => {
@@ -37,6 +31,7 @@ const Building = () => {
 
   return (
     <div className={css.building}>
+      {error && <p>{error}</p>}
       <div className={css.buildingBody}>
         <div className={css.penthouse}>{building.name}</div>
         {floors.map((floor) => (

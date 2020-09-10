@@ -8,9 +8,10 @@ const ELEVATOR_COUNT_DEFAULT = 5;
 
 const router = new Router();
 
+//In-memory storage...
 const buildings: Building[] = [];
 
-//TODO: turn into middleware?
+//TODO: Turn into middleware?
 const createResponseBody = (buildingId: string) => {
   const building = buildings.find((building) => building.id === buildingId);
   if (building) {
@@ -21,7 +22,7 @@ const createResponseBody = (buildingId: string) => {
       elevators,
       name,
     };
-  }
+  } else return null;
 };
 
 type TBuildingPost = {
@@ -56,10 +57,10 @@ router.get("/buildings/:id", (context) => {
   context.response.status = 200;
 });
 
-router.get("/buildings/:id/floors/:number", (context) => {
+router.post("/buildings/:id/callElevator", (context) => {
   const id = context.params.id;
-  const floorNumber = parseInt(context.params.number);
-  if (isNaN(floorNumber)) {
+  const { floorNumber } = context.request.body ?? {};
+  if (!floorNumber || typeof floorNumber !== "number") {
     return (context.response.status = 400);
   }
   const building = buildings.find((building) => building.id === id);

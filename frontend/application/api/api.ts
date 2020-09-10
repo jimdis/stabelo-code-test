@@ -33,8 +33,8 @@ export const getBuilding = async (id: string) => {
 };
 
 export const callElevator = async (buildingId: string, floorNumber: number) => {
-  const url = `/buildings/${buildingId}/floors/${floorNumber}`;
-  const { data: building } = await api.get<TBuilding>(url);
+  const url = `/buildings/${buildingId}/callElevator`;
+  const { data: building } = await api.post<TBuilding>(url, { floorNumber });
   return building;
 };
 

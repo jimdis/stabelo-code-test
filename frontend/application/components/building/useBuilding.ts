@@ -36,7 +36,7 @@ const useBuilding = () => {
         setBuilding(currentBuilding);
         setLoading(false);
       } catch (e) {
-        setError("Något gick fel :(");
+        setBuilding(undefined);
         setLoading(false);
       }
     };
@@ -75,10 +75,18 @@ const useBuilding = () => {
     }
   };
 
-  const callElevator = (floorNumber: number) => {
+  const callElevator = async (floorNumber: number) => {
     if (building) {
       setWaitingFloors([...waitingFloors, floorNumber]);
-      api.callElevator(building.id, floorNumber);
+      try {
+        await api.callElevator(building.id, floorNumber);
+      } catch (e) {
+        if (e.response) {
+          console.error(e.response);
+          setError("Något gick fel :(");
+        }
+        setError("Något gick fel :(");
+      }
     }
   };
 
