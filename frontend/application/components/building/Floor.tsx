@@ -18,10 +18,22 @@ const Floor = ({
   queuedElevator,
   onButtonClick,
 }: Props) => {
+  const isButtonDisabled =
+    waiting || !!elevators.find((el) => el.floor === number);
+  const handleClick = () => {
+    if (!isButtonDisabled) {
+      onButtonClick();
+    }
+  };
   return (
     <div className={css.floor}>
       <div className={css.buttonArea}>
-        <button className={waiting ? css.active : ""} onClick={onButtonClick}>
+        <button
+          className={
+            waiting ? css.active : isButtonDisabled ? css.disabled : ""
+          }
+          onClick={handleClick}
+        >
           {number}
         </button>
       </div>

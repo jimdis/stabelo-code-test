@@ -18,10 +18,10 @@
     text-decoration: none;
     outline: none;
   }
-  button:not(.active) {
+  button:not(.active):not(.disabled) {
     cursor: pointer;
   }
-  button:hover:not(.active) {
+  button:hover:not(.active):not(.disabled) {
     border-width: 2px;
     border-color: #eee;
   }
