@@ -2,9 +2,11 @@ import * as React from "react";
 import useWebSocket from "react-use-websocket";
 import * as api from "../../api/api";
 
+const STORAGE_KEY = "buildingId";
+
 const useBuilding = () => {
   const [building, setBuilding] = React.useState<api.TBuilding>();
-  const buildingId = building?.id ?? null;
+  const buildingId = building?.id;
   const getSocketUrl = React.useCallback(() => {
     return new Promise<string>((resolve) => {
       if (buildingId) {
@@ -19,21 +21,31 @@ const useBuilding = () => {
 
   const updatedBuilding: api.TBuilding | null = lastJsonMessage;
 
+  React.useEffect(() => {
+    if (buildingId) {
+      sessionStorage.setItem(STORAGE_KEY, buildingId);
+    }
+  }, [buildingId]);
+
   //TODO: Add back below to fetch building based on locally stored id
-  // React.useEffect(() => {
-  //   const loadBuilding = async () => {
-  //     setLoading(true);
-  //     try {
-  //       const currentBuilding = await api.getBuilding();
-  //       setBuilding(currentBuilding);
-  //       setLoading(false);
-  //     } catch (e) {
-  //       setError("Något gick fel :(");
-  //       setLoading(false);
-  //     }
-  //   };
-  //   loadBuilding();
-  // }, []);
+  React.useEffect(() => {
+    const loadBuilding = async (id: string) => {
+      setLoading(true);
+      try {
+        const currentBuilding = await api.getBuilding(id);
+        setBuilding(currentBuilding);
+        setLoading(false);
+      } catch (e) {
+        setError("Något gick fel :(");
+        setLoading(false);
+      }
+    };
+    const storedId = sessionStorage.getItem(STORAGE_KEY);
+    console.log(storedId);
+    if (storedId) {
+      loadBuilding(storedId);
+    }
+  }, []);
 
   React.useEffect(() => {
     console.log("got message!", updatedBuilding);
@@ -64,21 +76,17 @@ const useBuilding = () => {
   };
 
   const callElevator = (floorNumber: number) => {
-    // ignore click if already waiting for elevator or if elevator already is on floor
-    if (
-      !building ||
-      building.elevators.find((el) => el.floor === floorNumber)
-    ) {
-      return;
+    if (building) {
+      setWaitingFloors([...waitingFloors, floorNumber]);
+      api.callElevator(building.id, floorNumber);
     }
-    setWaitingFloors([...waitingFloors, floorNumber]);
-    api.callElevator(building.id, floorNumber);
   };
 
   const deleteBuilding = async () => {
     setLoading(true);
     try {
       if (buildingId) {
+        sessionStorage.removeItem(STORAGE_KEY);
         await api.deleteBuilding(buildingId);
         setBuilding(undefined);
         setLoading(false);
